@@ -1,8 +1,7 @@
-package com.example.tradeforce.trademobile;
+package andrevictor.com.trademoblie3;
 
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
-
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -38,9 +37,22 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
 
-        // Add a marker in Sydney and move the camera
-        LatLng sydney = new LatLng(-34, 151);
-        mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
+        //mMap.getUiSettings().setAllGesturesEnabled(false);
+
+        // Ponto A
+        LatLng pontoA = new LatLng(-23.581485, -46.638807);
+        mMap.addMarker(new MarkerOptions().position(pontoA).title("Ponto A"));
+        // Ponto B
+        LatLng pontoB = new LatLng(-23.581485,-46.638707);
+        mMap.addMarker(new MarkerOptions().position(pontoB).title("Ponto B"));
+        // Ponto C
+        LatLng pontoC = new LatLng(-23.581485, -46.638607);
+        mMap.addMarker(new MarkerOptions().position(pontoC).title("Ponto C"));
+        // Ponto D
+        LatLng pontoD = new LatLng(-23.581485,-46.638507);
+        mMap.addMarker(new MarkerOptions().position(pontoD).title("Ponto D"));
+
+        //Dar zoom no mapa
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(pontoC,17));
     }
 }
