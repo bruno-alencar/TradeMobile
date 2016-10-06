@@ -37,8 +37,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
 
-        //mMap.getUiSettings().setAllGesturesEnabled(false);
-
         // Ponto A
         LatLng pontoA = new LatLng(-23.581485, -46.638807);
         mMap.addMarker(new MarkerOptions().position(pontoA).title("Ponto A"));
