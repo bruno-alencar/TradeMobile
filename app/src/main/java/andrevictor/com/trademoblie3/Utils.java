@@ -18,7 +18,7 @@ import java.util.Date;
  * Created by allanromanato on 11/4/15.
  */
 public class Utils {
-
+/*
     public PessoaObj getInformacao(String end){
         String json;
         PessoaObj retorno;
@@ -70,20 +70,8 @@ public class Utils {
             e.printStackTrace();
             return null;
         }
-    }
 
-    private Bitmap baixarImagem(String url) {
-        try{
-            URL endereco;
-            InputStream inputStream;
-            Bitmap imagem; endereco = new URL(url);
-            inputStream = endereco.openStream();
-            imagem = BitmapFactory.decodeStream(inputStream);
-            inputStream.close();
-            return imagem;
-        }catch (IOException e) {
-            e.printStackTrace();
-            return null;
-        }
-    }
+       }
+        */
+
 }

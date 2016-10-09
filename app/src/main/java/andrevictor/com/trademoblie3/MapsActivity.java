@@ -1,7 +1,11 @@
 package andrevictor.com.trademoblie3;
 
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
+
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -9,9 +13,19 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import java.util.ArrayList;
+
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
 
+
+
+    static ArrayList<String> lugares;
+    static ArrayAdapter arrayAdapter;
+    static ArrayList<LatLng> localizacoes;
+
     private GoogleMap mMap;
+    FloatingActionButton botaoMenu;
+    ListView listaPrincipal;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -19,8 +33,28 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         setContentView(R.layout.activity_maps);
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
-                .findFragmentById(R.id.map);
+                .findFragmentById(R.id.fragmentRotas);
         mapFragment.getMapAsync(this);
+
+        listaPrincipal = (ListView) findViewById(R.id.ListRotas);
+
+        lugares = new ArrayList<>();
+        lugares.add("Vire a direita");
+        lugares.add("Pegue o onibus");
+        lugares.add("Pegue o trem");
+        lugares.add("Vire a direita");
+        lugares.add("Pegue o onibus");
+        lugares.add("Pegue o trem");
+        lugares.add("Vire a direita");
+        lugares.add("Pegue o onibus");
+        lugares.add("Pegue o trem");
+
+        localizacoes = new ArrayList<>();
+        localizacoes.add(new LatLng(0, 0));
+
+
+        arrayAdapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1, lugares);
+        listaPrincipal.setAdapter(arrayAdapter);
     }
 
 

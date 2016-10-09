@@ -10,9 +10,13 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ListView;
 import android.widget.Toast;
 
+import com.github.clans.fab.FloatingActionMenu;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -20,14 +24,23 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import java.util.ArrayList;
+import java.util.List;
+
 //AppCompatActivity,
 
-public class MainActivity extends FragmentActivity implements OnMapReadyCallback {
+public class MainActivity extends AppCompatActivity implements OnMapReadyCallback {
+
+    static ArrayList<String> lugares;
+    static ArrayAdapter arrayAdapter;
+    static ArrayList<LatLng> localizacoes;
 
     //Componentes
-    Button botaoPrincipal;
     GoogleMap mapa;
-    FloatingActionButton botaoMenu;
+    FloatingActionButton botaoMenu,floatingActionButton1, floatingActionButton2, floatingActionButton3, floatingActionButton4, floatingActionButton5, floatingActionButton6;
+    ListView listaPrincipal;
+    FloatingActionMenu materialDesignFAM;
+
 
     String[] permissoes = new String[]{
             android.Manifest.permission.ACCESS_FINE_LOCATION,
@@ -39,20 +52,32 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        listaPrincipal = (ListView) findViewById(R.id.ListPrincipal);
+
         PermissionUtils.validate(this,0,permissoes);
 
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
-                .findFragmentById(R.id.fragment);
+                .findFragmentById(R.id.fragmentPrincipal);
         mapFragment.getMapAsync(this);
 
-        botaoPrincipal = (Button) findViewById(R.id.btnPrincipal);
+        lugares = new ArrayList<>();
+        lugares.add("Adicione uma nova rota");
 
-        botaoMenu = (FloatingActionButton) findViewById(R.id.floatingActionButton);
-    }
+        localizacoes = new ArrayList<>();
+        localizacoes.add(new LatLng(0, 0));
 
-    public void AcaoRotas(View view){
-        Intent intent = new Intent(this, MapsActivity.class);
-        startActivity(intent);
+
+        arrayAdapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1, lugares);
+        listaPrincipal.setAdapter(arrayAdapter);
+
+        listaPrincipal.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Intent intent = new Intent(getApplicationContext(), MapsActivity.class);
+                intent.putExtra("infoLocalizacao", position);
+                startActivity(intent);
+            }
+        });
     }
 
     @Override
