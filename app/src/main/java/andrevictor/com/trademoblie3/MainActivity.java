@@ -1,6 +1,7 @@
 package andrevictor.com.trademoblie3;
 
 import android.*;
+import android.Manifest;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -9,6 +10,7 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -37,7 +39,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     //Componentes
     GoogleMap mapa;
-    FloatingActionButton botaoMenu,floatingActionButton1, floatingActionButton2, floatingActionButton3, floatingActionButton4, floatingActionButton5, floatingActionButton6;
+    FloatingActionButton botaoMenu,floatingActionButton1, floatingActionButton2, floatingActionButton3;
     ListView listaPrincipal;
     FloatingActionMenu materialDesignFAM;
 
@@ -65,7 +67,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 
         localizacoes = new ArrayList<>();
         localizacoes.add(new LatLng(0, 0));
-
+        Log.i("Aqui", "passei aqui");
 
         arrayAdapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1, lugares);
         listaPrincipal.setAdapter(arrayAdapter);
@@ -73,6 +75,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         listaPrincipal.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Log.i("Aqui tb", "passei aqui");
                 Intent intent = new Intent(getApplicationContext(), MapsActivity.class);
                 intent.putExtra("infoLocalizacao", position);
                 startActivity(intent);
@@ -91,10 +94,6 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 
         //Dar zoom no mapa
         mapa.moveCamera(CameraUpdateFactory.newLatLngZoom(ponto,18));
-    }
-
-    public void Menu(View view){
-        Toast.makeText(MainActivity.this, "Falta implementar a acao do menu", Toast.LENGTH_SHORT).show();
     }
 
     @Override

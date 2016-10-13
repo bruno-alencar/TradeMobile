@@ -4,6 +4,8 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.util.Log;
 
+import com.google.android.gms.maps.model.LatLng;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -12,16 +14,16 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
-/**
- * Created by allanromanato on 11/4/15.
- */
 public class Utils {
-/*
-    public PessoaObj getInformacao(String end){
-        String json;
-        PessoaObj retorno;
+
+    public Direcoes getInformacao(String end){
+            String json;
+        Direcoes retorno;
+        Log.i("Resultado123", "passei aqui");
         json = NetworkUtils.getJSONFromAPI(end);
         Log.i("Resultado", json);
         retorno = parseJson(json);
@@ -29,49 +31,70 @@ public class Utils {
         return retorno;
     }
 
-    private PessoaObj parseJson(String json){
+    private Direcoes parseJson(String json){
         try {
-            PessoaObj pessoa = new PessoaObj();
+            Direcoes direcoes = new Direcoes();
 
-            JSONObject jsonObj = new JSONObject(json);
-            JSONArray array = jsonObj.getJSONArray("results");
+            JSONObject result = new JSONObject(json);
+            JSONArray routes = result.getJSONArray("routes");
 
-            SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-            Date data;
+            //distance = routes.getJSONObject(0).getJSONArray("legs").getJSONObject(0).getJSONObject("distance").getInt("value");
 
-            JSONObject objArray = array.getJSONObject(0);
+            JSONArray steps = routes.getJSONObject(0).getJSONArray("legs").getJSONObject(0).getJSONArray("steps");
+            List<LatLng> lines = new ArrayList<LatLng>();
 
-            JSONObject obj = objArray.getJSONObject("user");
-            //Atribui os objetos que estão nas camadas mais altas
-            pessoa.setEmail(obj.getString("email"));
-            pessoa.setUsername(obj.getString("username"));
-            pessoa.setSenha(obj.getString("password"));
-            pessoa.setTelefone(obj.getString("phone"));
-            data = new Date(obj.getLong("dob")*1000);
-            pessoa.setNascimento(sdf.format(data));
+            for(int i=0; i < steps.length(); i++) {
+                //Log.i("Script", "STEP: LAT: "+steps.getJSONObject(i).getJSONObject("start_location").getDouble("lat")+" | LNG: "+steps.getJSONObject(i).getJSONObject("start_location").getDouble("lng"));
 
-            //Nome da pessoa é um objeto, instancia um novo JSONObject
-            JSONObject nome = obj.getJSONObject("name");
-            pessoa.setNome(nome.getString("first"));
-            pessoa.setSobrenome(nome.getString("last"));
+                String polyline = steps.getJSONObject(i).getJSONObject("polyline").getString("points");
 
-            //Endereco tambem é um Objeto
-            JSONObject endereco = obj.getJSONObject("location");
-            pessoa.setEndereco(endereco.getString("street"));
-            pessoa.setEstado(endereco.getString("state"));
-            pessoa.setCidade(endereco.getString("city"));
+                for(LatLng p : decodePolyline(polyline)) {
+                    lines.add(p);
+                }
 
-            //Imagem eh um objeto
-            JSONObject foto = obj.getJSONObject("picture");
-            pessoa.setFoto(baixarImagem(foto.getString("large")));
+                //Log.i("Script", "STEP: LAT: "+steps.getJSONObject(i).getJSONObject("end_location").getDouble("lat")+" | LNG: "+steps.getJSONObject(i).getJSONObject("end_location").getDouble("lng"));
+            }
 
-            return pessoa;
+            return direcoes;
         }catch (JSONException e){
             e.printStackTrace();
             return null;
         }
 
        }
-        */
+
+    // DECODE POLYLINE
+    private List<LatLng> decodePolyline(String encoded) {
+
+        List<LatLng> listPoints = new ArrayList<LatLng>();
+        int index = 0, len = encoded.length();
+        int lat = 0, lng = 0;
+
+        while (index < len) {
+            int b, shift = 0, result = 0;
+            do {
+                b = encoded.charAt(index++) - 63;
+                result |= (b & 0x1f) << shift;
+                shift += 5;
+            } while (b >= 0x20);
+            int dlat = ((result & 1) != 0 ? ~(result >> 1) : (result >> 1));
+            lat += dlat;
+
+            shift = 0;
+            result = 0;
+            do {
+                b = encoded.charAt(index++) - 63;
+                result |= (b & 0x1f) << shift;
+                shift += 5;
+            } while (b >= 0x20);
+            int dlng = ((result & 1) != 0 ? ~(result >> 1) : (result >> 1));
+            lng += dlng;
+
+            LatLng p = new LatLng((((double) lat / 1E5)), (((double) lng / 1E5)));
+            Log.i("Script", "POL: LAT: "+p.latitude+" | LNG: "+p.longitude);
+            listPoints.add(p);
+        }
+        return listPoints;
+    }
 
 }

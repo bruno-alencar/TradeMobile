@@ -9,6 +9,23 @@ import java.util.ArrayList;
 public class Direcoes{
 
     private String nomeLocal;
-    private ArrayList directionsMap;
+    private String directionsMap;
+
+    public String getNomeLocal() {
+        return nomeLocal;
+    }
+
+    public void setNomeLocal(String nomeLocal) {
+        this.nomeLocal = nomeLocal;
+    }
+
+    public String getDirectionsMap() {
+        return directionsMap;
+    }
+
+    public void setDirectionsMap(String directionsMap) {
+        this.directionsMap = directionsMap;
+    }
+
 
 }
