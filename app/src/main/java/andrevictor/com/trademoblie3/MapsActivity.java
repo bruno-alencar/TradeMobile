@@ -29,8 +29,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     static ArrayAdapter arrayAdapter;
     static ArrayList<LatLng> localizacoes;
 
-    private Polyline polyline;
-    private List<LatLng> list;
+  //  private Polyline polyline;
+  //  private List<LatLng> list;
 
     private ProgressDialog load;
 
@@ -46,10 +46,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 .findFragmentById(R.id.fragmentRotas);
         mapFragment.getMapAsync(this);
 
-        Log.i("Um", "passei aqui");
-
         GetJson download = new GetJson();
-        Log.i("Dois", "passei aqui");
 
         listaPrincipal = (ListView) findViewById(R.id.ListRotas);
 
@@ -71,10 +68,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         arrayAdapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1, lugares);
         listaPrincipal.setAdapter(arrayAdapter);
 
-        Log.i("Tres", "passei aqui");
         //Chama Async Task
         download.execute();
-        Log.i("Qadro", "passei aqui");
     }
 
 
@@ -95,12 +90,12 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         LatLng pontoA = new LatLng(-23.581485, -46.638807);
         //mMap.addMarker(new MarkerOptions().position(pontoA).title("Ponto A"));
 
-        drawRoute();
+        //drawRoute();
 
         //Dar zoom no mapa
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(pontoA,17));
     }
-
+/*
     public void drawRoute(){
         PolylineOptions po;
 
@@ -118,6 +113,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             polyline.setPoints(list);
         }
     }
+    */
 
 
     private class GetJson extends AsyncTask<Void, Void, Direcoes> {

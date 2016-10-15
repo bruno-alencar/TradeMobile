@@ -38,22 +38,27 @@ public class Utils {
             JSONObject result = new JSONObject(json);
             JSONArray routes = result.getJSONArray("routes");
 
+            JSONObject objArray = routes.getJSONObject(0);
+
+            direcoes.setNomeLocal(objArray.getString("copyrights"));
+
+
             //distance = routes.getJSONObject(0).getJSONArray("legs").getJSONObject(0).getJSONObject("distance").getInt("value");
 
-            JSONArray steps = routes.getJSONObject(0).getJSONArray("legs").getJSONObject(0).getJSONArray("steps");
-            List<LatLng> lines = new ArrayList<LatLng>();
+            //JSONArray steps = routes.getJSONObject(0).getJSONArray("legs").getJSONObject(0).getJSONArray("steps");
+            //List<LatLng> lines = new ArrayList<LatLng>();
 
-            for(int i=0; i < steps.length(); i++) {
+            //for(int i=0; i < steps.length(); i++) {
                 //Log.i("Script", "STEP: LAT: "+steps.getJSONObject(i).getJSONObject("start_location").getDouble("lat")+" | LNG: "+steps.getJSONObject(i).getJSONObject("start_location").getDouble("lng"));
 
-                String polyline = steps.getJSONObject(i).getJSONObject("polyline").getString("points");
+             //   String polyline = steps.getJSONObject(i).getJSONObject("polyline").getString("points");
 
-                for(LatLng p : decodePolyline(polyline)) {
-                    lines.add(p);
-                }
+            //    for(LatLng p : decodePolyline(polyline)) {
+            //        lines.add(p);
+            //    }
 
                 //Log.i("Script", "STEP: LAT: "+steps.getJSONObject(i).getJSONObject("end_location").getDouble("lat")+" | LNG: "+steps.getJSONObject(i).getJSONObject("end_location").getDouble("lng"));
-            }
+          //  }
 
             return direcoes;
         }catch (JSONException e){
